@@ -1,11 +1,11 @@
-import Screen from '@/components/Screen';
+import Screen from '@/components/screen';
 import { Link } from 'expo-router';
 import { StyleSheet, Text } from 'react-native';
 
 export default function AboutScreen() {
   return (
     <Screen>
-      <Text style={styles.text}>About screen</Text>
+      <Text style={styles.text}>Settings</Text>
       <Text>{'\n'}</Text>
       <Link href="/" style={styles.link}>
         Go back to Home screen!
