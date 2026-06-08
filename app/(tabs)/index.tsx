@@ -1,4 +1,4 @@
-import Screen from "@/components/Screen";
+import Screen from "@/components/screen";
 import { StyleSheet, Text } from "react-native";
 
 export default function Index(){
