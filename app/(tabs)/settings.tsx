@@ -1,4 +1,4 @@
-import Screen from '@/components/screen';
+import Screen from '@/components/Screen';
 import { Link } from 'expo-router';
 import { StyleSheet, Text } from 'react-native';
 
