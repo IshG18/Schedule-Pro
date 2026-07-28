@@ -1,13 +1,12 @@
+import { MyCalendar } from "@/components/mycalendar";
 import Screen from "@/components/screen";
 import { StyleSheet, Text } from "react-native";
-
-const date = new Date();
-date.setUTCHours(0,0,0,0);
 
 export default function Index(){
     return (
         <Screen>
             <Text style={styles.text}>Calendar Page</Text>
+            {MyCalendar()}
         </Screen>
     );
 }
