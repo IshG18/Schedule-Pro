@@ -2,20 +2,6 @@ import type { CalendarDay } from "@/node_modules\\react-native-calendar-ui\\src\
 import { useCallback, useMemo, useState } from "react";
 import type { UseCalendarOptions, UseCalendarReturn } from "react-native-calendar-ui";
 
-export interface WeeklyReturn {
-    year: number;
-    month: number;
-    days: CalendarDay[],
-    selectedDate: Date | null;
-    previousMonth: () => void;
-    nextMonth: () => void;
-    goToMonth: (year: number, month: number) => void;
-    goToToday: () => void;
-    selectDate: (date: Date) => void;
-    isDateSelected: (date: Date) => boolean;
-    isToday: (date: Date) => boolean;
-}
-
 //Generates a list of days for given month
 export function getWeeklyView(year: number, month: number): CalendarDay[ ] { //Might need a way to pass in styles
     const firstDay = new Date(year, month, 1);

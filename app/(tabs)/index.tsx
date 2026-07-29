@@ -1,12 +1,12 @@
-import { MyCalendar } from "@/components/mycalendar";
-import Screen from "@/components/screen";
+import Screen from "@/components/Screen";
+import { showWeeklyView } from "@/components/WeeklyView";
 import { StyleSheet, Text } from "react-native";
 
 export default function Index(){
     return (
         <Screen>
             <Text style={styles.text}>Calendar Page</Text>
-            {MyCalendar()}
+            {showWeeklyView()}
         </Screen>
     );
 }
