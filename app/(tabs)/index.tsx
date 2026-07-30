@@ -1,11 +1,11 @@
 import Screen from "@/components/Screen";
 import { showWeeklyView } from "@/components/WeeklyView";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
 export default function Index(){
     return (
         <Screen>
-            <Text style={styles.text}>Calendar Page</Text>
+            {/* <Text style={[styles.text]}>Schedule-Pro</Text> */}
             {showWeeklyView()}
         </Screen>
     );
@@ -13,7 +13,9 @@ export default function Index(){
 
 const styles = StyleSheet.create({
     text: {
-        color: "white",
         fontSize: 20,
+        color: "#bfc734",
+        textAlign: "center",
     }
+
 });

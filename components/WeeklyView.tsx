@@ -60,7 +60,7 @@ export function showWeeklyView(){
                             selected && styles.dayTextSelected,
                             today && styles.dayTextToday,
                         ]}>
-                            {item.date}
+                            Lorem Ipsum
                         </Text>
                         </TouchableOpacity>
                     )
@@ -72,21 +72,25 @@ export function showWeeklyView(){
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 16 },
+    container: { paddingTop: 0, paddingLeft: 0, paddingRight: 8, paddingBottom: 0 },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 16,
     },
-    title: { fontSize: 18, fontWeight: "bold" },
-    navButton: { fontSize: 24, padding: 8 },
+    title: { fontSize: 18, fontWeight: "bold", color: "#BEC4C4",},
+    navButton: { fontSize: 30, padding: 8, color: "#BEC4C4",},
     day: {
-        width: "14.28%",
-        aspectRatio: 1,
-        justifyContent: "center",
+        backgroundColor: "#313333",
+        width: "100%",
         alignItems: "center",
         borderRadius: 8,
+        marginLeft: 50,
+        marginBottom: 16,
+        height: 54,
+        borderTopWidth: 6,
+        borderTopColor: "#97d73d8e",
     },
     dayOutside: { opacity: 0.3 },
     daySelected: { backgroundColor: "#007AFF" },

@@ -5,12 +5,19 @@ export default function RootLayout(){
       <Tabs screenOptions={{
         headerShadowVisible: false,
         headerTintColor: "#bfc734",
-        headerStyle: {backgroundColor: "#1C1D1D"},
-        tabBarStyle: {backgroundColor: "#1C1D1D"},
+        headerStyle: {
+          backgroundColor: "#161717",
+          height: 80,
+          borderTopWidth: 0,
+        },
+        tabBarStyle: {
+          backgroundColor: "#161717",
+          height: 58,
+        },
       }}>
 
         <Tabs.Screen name="index" options={{
-            title: "My Calendar",
+            title: "Schedule Pro",
         }}/>
 
         <Tabs.Screen name="settings" options={{
