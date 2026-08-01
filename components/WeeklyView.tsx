@@ -1,6 +1,6 @@
 import type { CalendarDay } from "@/node_modules\\react-native-calendar-ui\\src\\types\\calendar.ts";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { MONTHS } from "react-native-calendar-ui";
+import { DAYS, MONTHS } from "react-native-calendar-ui";
 import { useWeeklyView } from "./useWeekly";
 
 export function showWeeklyView(){
@@ -37,6 +37,7 @@ export function showWeeklyView(){
 
             {/* Day FlatList */}
             <FlatList<CalendarDay>
+                style={[styles.list]}
                 data={days}
                 renderItem={({ item, index }) => {
                     const date = new Date(item.year, item.month, item.date);
@@ -44,25 +45,31 @@ export function showWeeklyView(){
                     const today = isToday(date);
 
                     return (
-                        <TouchableOpacity
-                        style={[
-                            styles.day,
-                            !item.isCurrentMonth && styles.dayOutside,
-                            selected && styles.daySelected,
-                        ]}
-                        key={index}
-                        onPress={() => {selectDate(date)}}
-                        >
-                        <Text
-                        style={[
-                            styles.dayText,
-                            !item.isCurrentMonth && styles.dayTextOutside,
-                            selected && styles.dayTextSelected,
-                            today && styles.dayTextToday,
-                        ]}>
-                            Lorem Ipsum
-                        </Text>
-                        </TouchableOpacity>
+                        <View style={[styles.row]}>
+                            <View style={[styles.dateLabel]}>
+                                <Text style={[styles.dayText]}>{DAYS[date.getDay()].slice(0,3)}</Text>
+                                <Text style={[styles.dateText]}>{item.date}</Text>
+                            </View>
+                            <TouchableOpacity
+                            style={[
+                                styles.day,
+                                !item.isCurrentMonth && styles.dayOutside,
+                                selected && styles.daySelected,
+                            ]}
+                            key={index}
+                            onPress={() => {selectDate(date)}}
+                            >
+                                <Text
+                                style={[
+                                    styles.eventText,
+                                    !item.isCurrentMonth && styles.dayTextOutside,
+                                    selected && styles.dayTextSelected,
+                                    today && styles.dayTextToday,
+                                ]}>
+                                    Lorem Ipsum
+                                </Text>
+                            </TouchableOpacity>
+                        </View> 
                     )
                 }}
             />
@@ -72,7 +79,8 @@ export function showWeeklyView(){
 }
 
 const styles = StyleSheet.create({
-    container: { paddingTop: 0, paddingLeft: 0, paddingRight: 8, paddingBottom: 0 },
+    container: { paddingTop: 0, paddingLeft: 0, paddingRight: 12, paddingBottom: 0 },
+    list: { marginBottom: 40 },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -83,19 +91,40 @@ const styles = StyleSheet.create({
     navButton: { fontSize: 30, padding: 8, color: "#BEC4C4",},
     day: {
         backgroundColor: "#313333",
-        width: "100%",
+        flex: 1,
         alignItems: "center",
         borderRadius: 8,
-        marginLeft: 50,
+        marginLeft: 10,
         marginBottom: 16,
-        height: 54,
+        height: 60,
         borderTopWidth: 6,
         borderTopColor: "#97d73d8e",
     },
     dayOutside: { opacity: 0.3 },
     daySelected: { backgroundColor: "#007AFF" },
-    dayText: { fontSize: 16 },
+    eventText: { fontSize: 16, color: "#BEC4C4", },
     dayTextOutside: { color: "#999" },
     dayTextSelected: { color: "#fff", fontWeight: "bold" },
     dayTextToday: { fontWeight: "bold", textDecorationLine: "underline" },
+    row: {
+        flexDirection: "row",
+        paddingVertical: 2,
+    },
+    dateLabel: {
+        backgroundColor: "#313333",
+        borderRadius: 8,
+        height: 50,
+        marginTop: 6,
+        marginLeft: 8,
+        alignItems: "center",
+        width:  45,
+    },
+    dayText: {
+        color: "#9ee33ea5",
+    },
+    dateText: {
+        color: "#BEC4C4",
+        fontSize: 20,
+    },
+        
 });
