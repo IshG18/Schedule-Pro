@@ -4,7 +4,7 @@ export default function RootLayout(){
     return (
       <Tabs screenOptions={{
         headerShadowVisible: false,
-        headerTintColor: "#bfc734",
+        headerTintColor: "#acd54b",
         headerStyle: {
           backgroundColor: "#161717",
           height: 80,

@@ -1,14 +1,47 @@
-import type { CalendarDay } from "@/node_modules\\react-native-calendar-ui\\src\\types\\calendar.ts";
-import { useCallback, useMemo, useState } from "react";
-import type { UseCalendarOptions, UseCalendarReturn } from "react-native-calendar-ui";
+import * as Crypto from "expo-crypto";
+import { useCallback, useEffect, useState } from "react";
+import type { UseCalendarOptions } from "react-native-calendar-ui";
+
+export interface eCalendarDay {
+  date: number;
+  month: number;
+  year: number;
+  isCurrentMonth: boolean;
+  timestamp: number;
+  events: event[];
+}
+
+export interface event {
+    info: string
+    title: string
+    startTime: Date
+    endTime: Date
+    id: string
+}
+
+export interface UseECalendarReturn {
+  year: number;
+  month: number;
+  days: eCalendarDay[];
+  selectedDate: Date | null;
+  previousMonth: () => void;
+  nextMonth: () => void;
+  goToMonth: (year: number, month: number) => void;
+  goToToday: () => void;
+  selectDate: (date: Date) => void;
+  isDateSelected: (date: Date) => boolean;
+  isToday: (date: Date) => boolean;
+  addEvent: (info: string, title: string, startTime: Date, endTime: Date, date: number) => void;
+  delEvent: (id:string, date: number) => void;
+}
 
 //Generates a list of days for given month
-export function getWeeklyView(year: number, month: number): CalendarDay[ ] { //Might need a way to pass in styles
+export function getWeeklyView(year: number, month: number): eCalendarDay[] { //Might need a way to pass in styles
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
     const startingDayOfWeek = firstDay.getDay();
-    const days: CalendarDay[] = []; 
+    const days: eCalendarDay[] = [];
 
     for (let day=1; day<=daysInMonth; day++){
         days.push({
@@ -17,6 +50,7 @@ export function getWeeklyView(year: number, month: number): CalendarDay[ ] { //M
         year,
         isCurrentMonth: true,
         timestamp: new Date(year, month, day).getTime(),
+        events: []
         });
     }
 
@@ -25,7 +59,7 @@ export function getWeeklyView(year: number, month: number): CalendarDay[ ] { //M
 
 export function useWeeklyView(
     options: UseCalendarOptions = {}
-): UseCalendarReturn {
+): UseECalendarReturn {
     const now = new Date();
     const {
     initialYear = now.getFullYear(),
@@ -38,18 +72,24 @@ export function useWeeklyView(
     const [year, setYear] = useState(initialYear);
     const [month, setMonth] = useState(initialMonth);
     const [selectedDate, setSelectedDate] = useState<Date | null>(
-    initialSelectedDate
+        initialSelectedDate
     );
 
-    const days = useMemo(() => getWeeklyView(year, month), [year, month]);
+    const [days, setDays] = useState<eCalendarDay[]>([]);
+
+    useEffect(() => {
+        setDays(getWeeklyView(year, month));
+    }, [])
 
     const previousMonth = useCallback(() => {
         if (month === 0) {
         setYear(year - 1);
         setMonth(11);
+        setDays(getWeeklyView(year-1, 11));
         onMonthChange?.(year - 1, 11);
         } else {
         setMonth(month - 1);
+        setDays(getWeeklyView(year, month-1));
         onMonthChange?.(year, month - 1);
         }
     }, [year, month, onMonthChange]);
@@ -58,9 +98,11 @@ export function useWeeklyView(
         if (month === 11) {
         setYear(year + 1);
         setMonth(0);
+        setDays(getWeeklyView(year+1, 0));
         onMonthChange?.(year + 1, 0);
         } else {
         setMonth(month + 1);
+        setDays(getWeeklyView(year, month+1));
         onMonthChange?.(year, month + 1);
         }
     }, [year, month, onMonthChange]);
@@ -70,9 +112,7 @@ export function useWeeklyView(
         setYear(newYear);
         setMonth(newMonth);
         onMonthChange?.(newYear, newMonth);
-    },
-    [onMonthChange]
-    );
+    }, [onMonthChange]);
 
     const goToToday = useCallback(() => {
         const today = new Date();
@@ -112,6 +152,29 @@ export function useWeeklyView(
         );
     }, []);
 
+    const addEvent = (info: string, title: string, startTime: Date, endTime: Date, date: number) => {
+        const newEvent: event = {info:info, title:title, startTime:startTime, endTime:endTime, id:Crypto.randomUUID()}
+        setDays((prev) =>
+            prev.map((item) =>
+                item.date === date 
+            ? {...item, events: [...item.events, newEvent]}
+            : item
+        ))
+    }
+    
+    const delEvent = (id:string, date: number) => {
+        setDays((prev) =>
+            prev.map((item) =>
+                item.date === date
+                ? {
+                    ...item, 
+                    events: item.events.filter((nEvent) => nEvent.id === id) 
+                }
+                : item
+            )
+        )
+    } 
+
     return {
         year, 
         month, 
@@ -123,6 +186,8 @@ export function useWeeklyView(
         goToMonth,
         goToToday,
         isDateSelected,
-        isToday
+        isToday,
+        addEvent,
+        delEvent
     }
 }
