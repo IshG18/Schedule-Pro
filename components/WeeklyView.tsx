@@ -1,7 +1,7 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
-import { FlatList, Modal, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, Modal, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { DAYS, MONTHS } from "react-native-calendar-ui";
 import { eCalendarDay, event, useWeeklyView } from "./useWeekly";
 
@@ -57,7 +57,7 @@ export function showWeeklyView(){
                 <Text style={styles.navButton}>←</Text>
                 </TouchableOpacity>
                 <Text style={styles.title}>
-                {MONTHS[month]} {year}
+                    {MONTHS[month]} {year}
                 </Text>
                 <TouchableOpacity onPress={nextMonth}>
                 <Text style={styles.navButton}>→</Text>
@@ -149,174 +149,174 @@ export function showWeeklyView(){
                 onRequestClose={() => {seteventForm(false)}} 
                 animationType="slide"
                 transparent={true}>
-                <View style={styles.backdrop}>
-                    <View style={styles.sheet}>
-                        <Text style={[styles.header, {color: "#7a7a7a"}]}>Add Event</Text>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.backdrop}>
+                        <View style={styles.sheet}>
+                            <Text style={[styles.header, {color: "#7a7a7a"}]}>Add Event</Text>
 
-                        <TextInput
-                        style={styles.input}
-                        placeholder="Title"
-                        placeholderTextColor="#888"
-                        value={title}
-                        onChangeText={setTitle}
-                        />
+                            <TextInput
+                            style={styles.input}
+                            placeholder="Title"
+                            placeholderTextColor="#888"
+                            value={title}
+                            onChangeText={setTitle}
+                            />
 
-                        <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-                        <Text style={styles.inputText}>{formatDate(date)}</Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+                            <Text style={styles.inputText}>{formatDate(date)}</Text>
+                            </TouchableOpacity>
 
-                        {showDatePicker && (
-                            Platform.OS === "ios" ? (
-                                <Modal transparent animationType="slide" visible={showDatePicker}>
-                                    <View style={styles.pickerBackdrop}>
-                                        <View style={styles.pickerSheet}>
-                                        <DateTimePicker
-                                            value={date}
-                                            mode="date"
-                                            display="spinner"
-                                            onChange={(event, selected) => {
-                                            if (selected) setDate(selected);
-                                            }}
-                                        />
-                                        <TouchableOpacity onPress={() => setShowDatePicker(false)}>
-                                            <Text style={styles.doneText}>Done</Text>
-                                        </TouchableOpacity>
+                            {showDatePicker && (
+                                Platform.OS === "ios" ? (
+                                    <Modal transparent animationType="slide" visible={showDatePicker}>
+                                        <View style={styles.pickerBackdrop}>
+                                            <View style={styles.pickerSheet}>
+                                            <DateTimePicker
+                                                value={date}
+                                                mode="date"
+                                                display="spinner"
+                                                onChange={(event, selected) => {
+                                                if (selected) setDate(selected);
+                                                }}
+                                            />
+                                            <TouchableOpacity onPress={() => setShowDatePicker(false)}>
+                                                <Text style={styles.doneText}>Done</Text>
+                                            </TouchableOpacity>
+                                            </View>
                                         </View>
+                                    </Modal>
+                                ) : (
+                                    <DateTimePicker
+                                    value={date}
+                                    mode="date"
+                                    display="default"
+                                    onChange={(event, selected) => {
+                                        setShowDatePicker(false);
+                                        if (selected) setDate(selected);
+                                    }}
+                                    />
+                                )
+                            )}
+
+                            <View style={[styles.row]}>
+                                <Text style={[{marginRight: 95, color: "#7a7a7a"}]}>Start Time</Text>
+                                <Text style={[{color: "#7a7a7a"}]}>End Time</Text>
+                            </View>
+
+                            <View style={styles.row}>
+                            <TouchableOpacity
+                                style={[styles.input, styles.halfInput, {marginRight: 8}]}
+                                onPress={() => setShowStartPicker(true)}
+                            >
+                                <Text style={styles.inputText}>{formatTime(startTime)}</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.input, styles.halfInput]}
+                                onPress={() => setShowEndPicker(true)}
+                            >
+                                <Text style={styles.inputText}>{formatTime(endTime)}</Text>
+                            </TouchableOpacity>
+                            </View>
+
+                            {showStartPicker && (
+                            Platform.OS === "ios" ? (
+                                <Modal transparent animationType="slide" visible={showStartPicker}>
+                                <View style={styles.pickerBackdrop}>
+                                    <View style={styles.pickerSheet}>
+                                    <DateTimePicker
+                                        value={startTime}
+                                        mode="time"
+                                        display="spinner"
+                                        onChange={(event, selected) => {
+                                        if (selected) setStartTime(selected);
+                                        }}
+                                    />
+
+                                    <TouchableOpacity onPress={() => setShowStartPicker(false)}>
+                                        <Text style={styles.doneText}>Done</Text>
+                                    </TouchableOpacity>
                                     </View>
+                                </View>
                                 </Modal>
                             ) : (
                                 <DateTimePicker
-                                value={date}
-                                mode="date"
+                                value={startTime}
+                                mode="time"
                                 display="default"
                                 onChange={(event, selected) => {
-                                    setShowDatePicker(false);
-                                    if (selected) setDate(selected);
+                                    setShowStartPicker(false);
+                                    if (selected) setStartTime(selected);
                                 }}
                                 />
                             )
-                        )}
+                            )}
 
-                         <View style={[styles.row]}>
-                            <Text style={[{marginRight: 95, color: "#7a7a7a"}]}>Start Time</Text>
-                            <Text style={[{color: "#7a7a7a"}]}>End Time</Text>
-                        </View>
+                            {showEndPicker && (
+                            Platform.OS === "ios" ? (
+                                <Modal transparent animationType="slide" visible={showEndPicker}>
+                                <View style={styles.pickerBackdrop}>
+                                    <View style={styles.pickerSheet}>
+                                    <DateTimePicker
+                                        value={endTime}
+                                        mode="time"
+                                        display="spinner"
+                                        onChange={(event, selected) => {
+                                        if (selected) setEndTime(selected);
+                                        }}
+                                    />
 
-                        <View style={styles.row}>
-                        <TouchableOpacity
-                            style={[styles.input, styles.halfInput, {marginRight: 8}]}
-                            onPress={() => setShowStartPicker(true)}
-                        >
-                            <Text style={styles.inputText}>{formatTime(startTime)}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[styles.input, styles.halfInput]}
-                            onPress={() => setShowEndPicker(true)}
-                        >
-                            <Text style={styles.inputText}>{formatTime(endTime)}</Text>
-                        </TouchableOpacity>
-                        </View>
-
-                        {showStartPicker && (
-                        Platform.OS === "ios" ? (
-                            <Modal transparent animationType="slide" visible={showStartPicker}>
-                            <View style={styles.pickerBackdrop}>
-                                <View style={styles.pickerSheet}>
-                                <DateTimePicker
-                                    value={startTime}
-                                    mode="time"
-                                    display="spinner"
-                                    onChange={(event, selected) => {
-                                    if (selected) setStartTime(selected);
-                                    }}
-                                />
-
-                                <TouchableOpacity onPress={() => setShowStartPicker(false)}>
-                                    <Text style={styles.doneText}>Done</Text>
-                                </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => setShowEndPicker(false)}>
+                                        <Text style={styles.doneText}>Done</Text>
+                                    </TouchableOpacity>
+                                    </View>
                                 </View>
-                            </View>
-                            </Modal>
-                        ) : (
-                            <DateTimePicker
-                            value={startTime}
-                            mode="time"
-                            display="default"
-                            onChange={(event, selected) => {
-                                setShowStartPicker(false);
-                                if (selected) setStartTime(selected);
-                            }}
-                            />
-                        )
-                        )}
-
-                        {showEndPicker && (
-                        Platform.OS === "ios" ? (
-                            <Modal transparent animationType="slide" visible={showEndPicker}>
-                            <View style={styles.pickerBackdrop}>
-                                <View style={styles.pickerSheet}>
+                                </Modal>
+                            ) : (
                                 <DateTimePicker
-                                    value={endTime}
-                                    mode="time"
-                                    display="spinner"
-                                    onChange={(event, selected) => {
+                                value={endTime}
+                                mode="time"
+                                display="default"
+                                onChange={(event, selected) => {
+                                    setShowEndPicker(false);
                                     if (selected) setEndTime(selected);
-                                    }}
+                                }}
                                 />
+                            )
+                            )}
 
-                                <TouchableOpacity onPress={() => setShowEndPicker(false)}>
-                                    <Text style={styles.doneText}>Done</Text>
-                                </TouchableOpacity>
-                                </View>
-                            </View>
-                            </Modal>
-                        ) : (
-                            <DateTimePicker
-                            value={endTime}
-                            mode="time"
-                            display="default"
-                            onChange={(event, selected) => {
-                                setShowEndPicker(false);
-                                if (selected) setEndTime(selected);
-                            }}
+                            <TextInput
+                            style={[styles.input, styles.infoInput]}
+                            placeholder="Desc"
+                            placeholderTextColor="#888"
+                            value={info}
+                            onChangeText={setInfo}
+                            multiline
                             />
-                        )
-                        )}
 
-                        <TextInput
-                        style={[styles.input, styles.infoInput]}
-                        placeholder="Desc"
-                        placeholderTextColor="#888"
-                        value={info}
-                        onChangeText={setInfo}
-                        multiline
-                        />
+                            <View style={styles.formEnd}>
+                                <TouchableOpacity
+                                style={[styles.addEBtn, {marginRight: 8}]}
+                                onPress={() => {
+                                    seteventForm(false);
+                                }}
+                                >
+                                <Text style={styles.addEBtnText}>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                style={styles.addEBtn}
+                                onPress={() => {
+                                    addEvent(info, title, startTime, endTime, date.getDate())
+                                    seteventForm(false);
+                                }}
+                                >
+                                <Text style={styles.addEBtnText}>Add</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                        <View style={styles.formEnd}>
-                            <TouchableOpacity
-                            style={[styles.addEBtn, {marginRight: 8}]}
-                            onPress={() => {
-                                seteventForm(false);
-                            }}
-                            >
-                            <Text style={styles.addEBtnText}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                            style={styles.addEBtn}
-                            onPress={() => {
-                                // your actual add logic goes here
-                                addEvent(info, title, startTime, endTime, date.getDate())
-                                seteventForm(false);
-                            }}
-                            >
-                            <Text style={styles.addEBtnText}>Add</Text>
-                            </TouchableOpacity>
                         </View>
-
                     </View>
-                </View>
-                
+                </TouchableWithoutFeedback>
             </Modal>
         </View>
     )

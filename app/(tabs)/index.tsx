@@ -5,7 +5,6 @@ import { StyleSheet } from "react-native";
 export default function Index(){
     return (
         <Screen>
-            {/* <Text style={[styles.text]}>Schedule-Pro</Text> */}
             {showWeeklyView()}
         </Screen>
     );
