@@ -11,13 +11,14 @@ Before running the project, make sure you have the following installed:
 - [Node.js](https://nodejs.org/)
 - npm
 - Git
-- Expo development environment
+- Expo development environment (through npm)
 
-You can verify your Node.js and npm installations with:
+You can verify your Node.js, npm, and Expo installations with:
 
 ```
 node --version
 npm --version
+npm expo --version
 ```
 
 ## Installation
@@ -40,7 +41,7 @@ npm install --legacy-peer-deps
 Start the Expo development server:
 
 ```
-npm start
+npx expo start
 ```
 
 From the Expo development server, you can launch the application on the available platforms or connect a physical device using the Expo development workflow.
