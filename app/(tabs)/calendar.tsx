@@ -1,5 +1,5 @@
-import { MyCalendar } from '@/components/MyCalendar';
-import Screen from '@/components/Screen';
+import { MyCalendar } from "@/components/MyCalendar";
+import Screen from "@/components/Screen";
 import { StyleSheet } from 'react-native';
 
 export default function CalendarScreen() {
