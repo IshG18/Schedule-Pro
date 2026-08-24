@@ -10,9 +10,9 @@ Before running the project, make sure you have the following installed:
 
 - [Node.js](https://nodejs.org/)
 - npm
-- Git
-- Expo development environment (through npm)
+- git
 - make
+- expo
 
 You can verify your Node.js, npm, and Expo installations with:
 
@@ -55,46 +55,23 @@ The application uses file-based routing. Routes are organized inside the `app` d
 
 During development, changes to the application can be tested through the Expo development server. Follow the existing project conventions when creating new screens and reusable components.
 
-## Quality Checks
+# Quality Checks
 
 The project includes automated tooling for maintaining code quality.
 
-### Formatting
+### Check
 
-Format the project with Prettier:
-
+Run formatting, linting, and type checks without making changes:
 ```
-npm run format
-```
-
-Check formatting without making changes:
-
-```
-npm run format:check
+make check
 ```
 
-### Linting
+### Fix
 
-Automatically fix ESLint issues:
-
+Automatically format and fix lint issues:
 ```
-npm run lint
+make fix
 ```
-
-Check for ESLint issues without making changes:
-
-```
-npm run lint:check
-```
-
-### Type Checking
-
-Run TypeScript type checking without generating build files:
-
-```
-npm run type-check
-```
-
 Before submitting changes, run the relevant quality checks to ensure the code is properly formatted, passes linting, and contains no TypeScript errors.
 
 ## Project Structure
