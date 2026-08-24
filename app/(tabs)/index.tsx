@@ -1,11 +1,11 @@
 import Screen from "@/components/Screen";
-import { showWeeklyView } from "@/components/WeeklyView";
+import { WeeklyView } from "@/components/WeeklyView";
 import { StyleSheet } from "react-native";
 
 export default function Index(){
     return (
         <Screen>
-            {showWeeklyView()}
+            {WeeklyView()}
         </Screen>
     );
 }

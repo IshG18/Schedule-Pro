@@ -5,7 +5,7 @@ import { FlatList, Keyboard, Modal, Platform, Pressable, StyleSheet, Text, TextI
 import { DAYS, MONTHS } from "react-native-calendar-ui";
 import { eCalendarDay, event, useWeeklyView } from "./useWeekly";
 
-export function showWeeklyView(){
+export function WeeklyView(){
     const {
         year,
         month,
