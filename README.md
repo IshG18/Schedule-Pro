@@ -55,7 +55,7 @@ The application uses file-based routing. Routes are organized inside the `app` d
 
 During development, changes to the application can be tested through the Expo development server. Follow the existing project conventions when creating new screens and reusable components.
 
-# Quality Checks
+## Quality Checks
 
 The project includes automated tooling for maintaining code quality.
 
