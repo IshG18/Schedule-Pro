@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { DAYS, MONTHS, useCalendar } from "react-native-calendar-ui";
 
@@ -21,14 +22,14 @@ export function MyCalendar(){
         <View style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
-                <TouchableOpacity onPress={previousMonth}>
-                <Text style={styles.navButton}>←</Text>
+                <TouchableOpacity onPress={previousMonth} style={styles.navButton}>
+                    <Ionicons name="arrow-back-outline" size={28} />
                 </TouchableOpacity>
                 <Text style={styles.title}>
-                {MONTHS[month]} {year}
+                    {MONTHS[month]} {year}
                 </Text>
-                <TouchableOpacity onPress={nextMonth}>
-                <Text style={styles.navButton}>→</Text>
+                <TouchableOpacity onPress={nextMonth} style={styles.navButton}>
+                    <Ionicons name="arrow-forward-outline" size={28} />
                 </TouchableOpacity>
             </View>
 
@@ -77,7 +78,7 @@ export function MyCalendar(){
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 16 },
+    container: { paddingHorizontal: 16 },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     title: { fontSize: 18, fontWeight: "bold" },
-    navButton: { fontSize: 24, padding: 8 },
+    navButton: { paddingTop: 12, paddingHorizontal: 50},
     weekdays: { flexDirection: "row", marginBottom: 8 },
     weekday: {
         flex: 1,

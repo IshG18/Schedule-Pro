@@ -1,4 +1,4 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
 import { FlatList, Keyboard, Modal, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
@@ -53,14 +53,14 @@ export function showWeeklyView(){
 
             {/* Arrows + Month Label */}
             <View style={styles.header}>
-                <TouchableOpacity onPress={previousMonth}>
-                <Text style={styles.navButton}>←</Text>
+                <TouchableOpacity onPress={previousMonth} style={styles.navButton}>
+                    <Ionicons name="arrow-back-outline" size={28} color="#BEC4C4" />
                 </TouchableOpacity>
                 <Text style={styles.title}>
                     {MONTHS[month]} {year}
                 </Text>
-                <TouchableOpacity onPress={nextMonth}>
-                <Text style={styles.navButton}>→</Text>
+                <TouchableOpacity onPress={nextMonth} style={styles.navButton}>
+                    <Ionicons name="arrow-forward-outline" size={28} color="#BEC4C4" />
                 </TouchableOpacity>
             </View>
 
@@ -134,7 +134,7 @@ export function showWeeklyView(){
                     setshowAdd(true);
                 }
             }}>
-                <MaterialIcons name="add" size={35} color="#BEC4C4"/>
+                <Ionicons name="add-outline" size={40} color="#BEC4C4" />
             </Pressable>
             { showAdd && (
                 <Pressable style={[styles.addBtn]} onPress={() => {
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     title: { fontSize: 18, fontWeight: "bold", color: "#BEC4C4",},
-    navButton: { fontSize: 30, padding: 8, color: "#BEC4C4",},
+    navButton: { paddingTop: 12, paddingHorizontal: 50},
     day: {
         backgroundColor: "#313333",
         flex: 1,

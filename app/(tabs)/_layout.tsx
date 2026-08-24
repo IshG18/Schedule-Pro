@@ -8,7 +8,6 @@ export default function RootLayout(){
         headerTintColor: "#acd54b",
         headerStyle: {
           backgroundColor: "#161717",
-          height: 80,
           borderTopWidth: 0,
         },
         tabBarStyle: {
