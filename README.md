@@ -62,6 +62,7 @@ The project includes automated tooling for maintaining code quality.
 ### Check
 
 Run formatting, linting, and type checks without making changes:
+
 ```
 make check
 ```
@@ -69,9 +70,11 @@ make check
 ### Fix
 
 Automatically format and fix lint issues:
+
 ```
 make fix
 ```
+
 Before submitting changes, run the relevant quality checks to ensure the code is properly formatted, passes linting, and contains no TypeScript errors.
 
 ## Project Structure
