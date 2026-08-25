@@ -1,3 +1,4 @@
+import { formatDate, formatTime, FormErrors, getEventStr, validateForm } from "@/utils/utils";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
@@ -15,7 +16,7 @@ import {
   View,
 } from "react-native";
 import { DAYS, MONTHS } from "react-native-calendar-ui";
-import { eCalendarDay, event, useWeeklyView } from "./useWeekly";
+import { eCalendarDay, useWeeklyView } from "./useWeekly";
 
 export function WeeklyView() {
   const {
@@ -39,28 +40,17 @@ export function WeeklyView() {
   const [eventForm, seteventForm] = useState<boolean>(false);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [startTime, setStartTime] = useState(date);
+  const [endTime, setEndTime] = useState(date);
   const [info, setInfo] = useState("");
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   //returns mm/dd/yy
-  const formatDate = (d: Date) =>
-    `${(d.getMonth() + 1).toString().padStart(2, "0")}/${d
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${d.getFullYear().toString().slice(-2)}`;
-
-  //returns 0:00
-  const formatTime = (d: Date) =>
-    d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-
-  //Converts to string
-  const getEventStr = (nEvent: event) =>
-    `${nEvent.title}     (${formatTime(nEvent.startTime)} - ${formatTime(nEvent.endTime)})`;
+  
 
   return (
     <View style={styles.container}>
@@ -180,19 +170,30 @@ export function WeeklyView() {
                 Add Event
               </Text>
 
-              <TextInput
-                style={styles.input}
-                placeholder="Title"
-                placeholderTextColor="#888"
-                value={title}
-                onChangeText={setTitle}
-              />
+              <View style={{marginBottom: 12}}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Title"
+                    placeholderTextColor="#888"
+                    value={title}
+                    onChangeText={setTitle}
+                    onFocus={() => {
+                      setFormErrors(prev => ({
+                        ...prev,
+                        title: undefined
+                      }))
+                    }}
+                />
+                {formErrors.title && 
+                    <Text style={{color: "red"}}>{formErrors.title}</Text>
+                }
+              </View>
 
               <TouchableOpacity
-                style={styles.input}
-                onPress={() => setShowDatePicker(true)}
+                  style={[styles.input, { marginBottom: 12 }]}
+                  onPress={() => setShowDatePicker(true)}
               >
-                <Text style={styles.inputText}>{formatDate(date)}</Text>
+                  <Text style={styles.inputText}>{formatDate(date)}</Text>
               </TouchableOpacity>
 
               {showDatePicker &&
@@ -233,27 +234,39 @@ export function WeeklyView() {
                 ))}
 
               <View style={[styles.row]}>
-                <Text style={[{ marginRight: 95, color: "#7a7a7a" }]}>
-                  Start Time
-                </Text>
+                <Text style={[{ marginRight: 95, color: "#7a7a7a" }]}>Start Time</Text>
                 <Text style={[{ color: "#7a7a7a" }]}>End Time</Text>
               </View>
 
-              <View style={styles.row}>
-                <TouchableOpacity
-                  style={[styles.input, styles.halfInput, { marginRight: 8 }]}
+              <View>
+                <View style={styles.row}>
+                  <TouchableOpacity
+                  style={[styles.input, styles.halfInput, { marginRight: 75}]}
                   onPress={() => setShowStartPicker(true)}
-                >
-                  <Text style={styles.inputText}>{formatTime(startTime)}</Text>
-                </TouchableOpacity>
+                  >
+                      <Text style={styles.inputText}>{formatTime(startTime)}</Text>
+                  </TouchableOpacity>
 
-                <TouchableOpacity
+                  <TouchableOpacity
                   style={[styles.input, styles.halfInput]}
-                  onPress={() => setShowEndPicker(true)}
-                >
-                  <Text style={styles.inputText}>{formatTime(endTime)}</Text>
-                </TouchableOpacity>
+                  onPress={() => {
+                    setFormErrors(prev => ({
+                      ...prev,
+                      endT: undefined
+                    }))
+                    setShowEndPicker(true);
+                  }}
+                  >
+                      <Text style={styles.inputText}>{formatTime(endTime)}</Text>
+                  </TouchableOpacity>
+
+                </View>
+                   {formErrors.endT && 
+                      <Text style={{color: "red"}}>{formErrors.endT}</Text>
+                    }
+                  <View style={{ marginBottom: 12 }} />
               </View>
+              
 
               {showStartPicker &&
                 (Platform.OS === "ios" ? (
@@ -331,14 +344,16 @@ export function WeeklyView() {
                   />
                 ))}
 
-              <TextInput
-                style={[styles.input, styles.infoInput]}
-                placeholder="Desc"
-                placeholderTextColor="#888"
-                value={info}
-                onChangeText={setInfo}
-                multiline
-              />
+              <View style={{marginBottom: 12}}>
+                <TextInput
+                    style={[styles.input, styles.infoInput]}
+                    placeholder="Desc"
+                    placeholderTextColor="#888"
+                    value={info}
+                    onChangeText={setInfo}
+                    multiline
+                />
+              </View>
 
               <View style={styles.formEnd}>
                 <TouchableOpacity
@@ -352,8 +367,28 @@ export function WeeklyView() {
                 <TouchableOpacity
                   style={styles.addEBtn}
                   onPress={() => {
-                    addEvent(info, title, startTime, endTime, date.getDate());
-                    seteventForm(false);
+                    //Matching times with day
+                    startTime.setFullYear(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate()
+                    );
+
+                    endTime.setFullYear(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate()
+                    );
+
+                    const errors = validateForm(title, startTime, endTime);
+                    setFormErrors(errors);
+
+                    if (Object.keys(errors).length == 0){
+                      addEvent(info, title, startTime, endTime, date.getDate());
+                      seteventForm(false);
+                    }
+
+                    
                   }}
                 >
                   <Text style={styles.addEBtnText}>Add</Text>
@@ -467,7 +502,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#2A2B2B",
     borderRadius: 8,
     padding: 12,
-    marginBottom: 12,
     justifyContent: "center",
     color: "#fff",
   },
